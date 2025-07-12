@@ -248,19 +248,3 @@ analyzer.detect_peaks_from_spectrum(plot_detection=True)  # Visual confirmation
 - Structure-property relationship studies
 - Material characterization workflows
 
-## Citation
-
-If you use this workflow in your research, please cite it:
-
-```bibtex
-@software{ins_ml_workflow,
-  title={INS Spectrum ML Analysis Workflow},
-  author={Your Name},
-  year={2024},
-  url={https://github.com/your-repo/ins-ml-workflow}
-}
-```
-
----
-
-Built for Science, Optimized for Machine Learning 
