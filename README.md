@@ -133,11 +133,6 @@ comprehensive_analysis_results/
 - **Trend Analysis**: Data trend line vs instrument line comparison
 - **Quality Assessment**: Peak width relative to instrument resolution
 
-### Publication-Quality Visualization
-- **Organized Plot Structure**: Separate directories for each plot type
-- **High-Resolution Output**: PDF format for publication
-- **Comprehensive Analysis**: 4 plot types per spectrum
-- **Clean Layout**: Professional appearance with proper labels
 
 ## Comprehensive Feature Documentation
 
