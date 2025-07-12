@@ -294,8 +294,3 @@ If you use this system in your research, please cite:
 }
 ```
 
-## Support
-
-For questions and support, please open an issue on GitHub or contact the maintainers. 
-=======
-# ins_feature_extraction
