@@ -155,4 +155,9 @@ Desktop.ini
 
 # Temporary files
 *.tmp
-*.temp 
+*.temp
+
+# ML Integration files (research ideas and examples)
+examples/ml_integration/
+ml_integration_results/
+ml_analysis_results/ 

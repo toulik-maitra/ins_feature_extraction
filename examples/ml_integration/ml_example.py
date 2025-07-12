@@ -29,7 +29,7 @@ warnings.filterwarnings('ignore')
 class INSMLAnalyzer:
     """Machine Learning analyzer for INS spectral features."""
     
-    def __init__(self, features_file="ml_analysis_results/features/ml_dataset.csv"):
+    def __init__(self, features_file="comprehensive_analysis_results/features/ml_dataset.csv"):
         """
         Initialize the ML analyzer.
         
