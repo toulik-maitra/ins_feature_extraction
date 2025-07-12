@@ -81,8 +81,8 @@ The workflow extracts a comprehensive set of features that capture different asp
 - `mean_peak_spacing`: Average distance between adjacent peaks
 
 ### Energy Region Features
-- `low_energy_peaks`: Peaks below 1000 cm⁻¹
-- `mid_energy_peaks`: Peaks between 1000-2000 cm⁻¹
+- `low_energy_peaks`: Peaks below 500 cm⁻¹
+- `mid_energy_peaks`: Peaks between 500-2000 cm⁻¹
 - `high_energy_peaks`: Peaks above 2000 cm⁻¹
 
 ### Fit Quality Features

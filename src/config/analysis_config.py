@@ -39,7 +39,7 @@ PARAMETER_BOUNDS = {
 FEATURE_CONFIG = {
     'include_individual_peaks': True,  # Include individual peak arrays
     'energy_regions': {                # Energy region boundaries
-        'low': 1000,                   # Low energy cutoff
+        'low': 500,                    # Low energy cutoff
         'mid': 2000                    # Mid energy cutoff
     },
     'statistical_features': True,      # Include skewness, kurtosis, etc.

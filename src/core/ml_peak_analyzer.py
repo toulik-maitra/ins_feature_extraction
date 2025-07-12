@@ -389,8 +389,8 @@ class MLPeakAnalyzer:
             'std_peak_spacing': self._calculate_std_spacing(centers),
             
             # Energy region features
-            'low_energy_peaks': len([c for c in centers if c < 1000]),
-            'mid_energy_peaks': len([c for c in centers if 1000 <= c < 2000]),
+            'low_energy_peaks': len([c for c in centers if c < 500]),
+            'mid_energy_peaks': len([c for c in centers if 500 <= c < 2000]),
             'high_energy_peaks': len([c for c in centers if c >= 2000]),
             
             # Individual peak features (for detailed analysis)
