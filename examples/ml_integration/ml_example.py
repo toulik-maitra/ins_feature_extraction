@@ -248,7 +248,42 @@ class INSMLAnalyzer:
         plt.title(f'K-Means Clustering (n_clusters={n_clusters})')
         plt.grid(True, alpha=0.3)
         plt.tight_layout()
+        
+        # Save plot
+        import os
+        os.makedirs('ml_integration_results', exist_ok=True)
+        plt.savefig('ml_integration_results/clustering_results.pdf', dpi=300, bbox_inches='tight')
+        plt.savefig('ml_integration_results/clustering_results.png', dpi=300, bbox_inches='tight')
         plt.show()
+        
+        # Save clustering results
+        import os
+        import pandas as pd
+        
+        os.makedirs('ml_integration_results', exist_ok=True)
+        
+        # Create results dataframe
+        clustering_df = pd.DataFrame({
+            'sample_index': range(len(cluster_labels)),
+            'cluster_label': cluster_labels,
+            'pc1': X_pca[:, 0],
+            'pc2': X_pca[:, 1]
+        })
+        
+        # Add sample names if available
+        if hasattr(self, 'features_df') and 'molecule_name' in self.features_df.columns:
+            clustering_df['molecule_name'] = self.features_df['molecule_name'].values
+        
+        clustering_df.to_csv('ml_integration_results/clustering_results.csv', index=False)
+        
+        # Save clustering summary
+        summary_df = pd.DataFrame({
+            'metric': ['n_clusters', 'silhouette_score', 'n_samples'],
+            'value': [n_clusters, silhouette_avg, len(cluster_labels)]
+        })
+        summary_df.to_csv('ml_integration_results/clustering_summary.csv', index=False)
+        
+        print(f"✓ Clustering results saved to ml_integration_results/")
         
         return {
             'labels': cluster_labels,
@@ -276,6 +311,12 @@ class INSMLAnalyzer:
                    square=True, linewidths=0.5)
         plt.title('Feature Correlation Matrix')
         plt.tight_layout()
+        
+        # Save plot
+        import os
+        os.makedirs('ml_integration_results', exist_ok=True)
+        plt.savefig('ml_integration_results/correlation_matrix.pdf', dpi=300, bbox_inches='tight')
+        plt.savefig('ml_integration_results/correlation_matrix.png', dpi=300, bbox_inches='tight')
         plt.show()
         
         # Feature distributions
@@ -291,6 +332,12 @@ class INSMLAnalyzer:
             plt.xlabel('Value')
             plt.ylabel('Frequency')
         plt.tight_layout()
+        
+        # Save plot
+        import os
+        os.makedirs('ml_integration_results', exist_ok=True)
+        plt.savefig('ml_integration_results/feature_distributions.pdf', dpi=300, bbox_inches='tight')
+        plt.savefig('ml_integration_results/feature_distributions.png', dpi=300, bbox_inches='tight')
         plt.show()
         
         # Find highly correlated features
@@ -304,12 +351,32 @@ class INSMLAnalyzer:
                         correlation_matrix.iloc[i, j]
                     ))
         
+        # Save feature analysis results
+        import os
+        import pandas as pd
+        
+        os.makedirs('ml_integration_results', exist_ok=True)
+        
+        # Save feature statistics
+        feature_stats = self.X.describe()
+        feature_stats.to_csv('ml_integration_results/feature_statistics.csv')
+        
+        # Save correlation matrix
+        correlation_matrix.to_csv('ml_integration_results/correlation_matrix.csv')
+        
+        # Save highly correlated pairs
         if high_corr_pairs:
             print("\nHighly Correlated Feature Pairs (|r| > 0.8):")
+            corr_pairs_df = pd.DataFrame(high_corr_pairs, columns=['feature1', 'feature2', 'correlation'])
+            corr_pairs_df.to_csv('ml_integration_results/highly_correlated_pairs.csv', index=False)
             for feat1, feat2, corr in high_corr_pairs:
                 print(f"  {feat1} ↔ {feat2}: {corr:.3f}")
         else:
             print("\nNo highly correlated feature pairs found.")
+            # Create empty file
+            pd.DataFrame(columns=['feature1', 'feature2', 'correlation']).to_csv('ml_integration_results/highly_correlated_pairs.csv', index=False)
+        
+        print(f"✓ Feature analysis results saved to ml_integration_results/")
     
     def hyperparameter_tuning(self, model_type='classification', test_size=0.2, random_state=42):
         """Perform hyperparameter tuning."""
