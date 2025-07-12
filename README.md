@@ -223,8 +223,8 @@ The system extracts **61 essential features** from INS spectra, organized into t
 ### 8. Energy Region Features (3 features)
 | Feature | Description | Units | ML Relevance |
 |---------|-------------|-------|--------------|
-| `low_energy_peaks` | Peaks below 1000 cm⁻¹ | count | Low-frequency modes |
-| `mid_energy_peaks` | Peaks 1000-2000 cm⁻¹ | count | Mid-frequency modes |
+| `low_energy_peaks` | Peaks below 500 cm⁻¹ | count | Low-frequency modes |
+| `mid_energy_peaks` | Peaks 500-2000 cm⁻¹ | count | Mid-frequency modes |
 | `high_energy_peaks` | Peaks above 2000 cm⁻¹ | count | High-frequency modes |
 
 ### 9. Peak Spacing Features (2 features)
