@@ -103,6 +103,8 @@ examples/ml_integration/              # ML integration scripts and outputs (excl
 ## Version Control and GitHub
 
 - **Repository:** https://github.com/toulik-maitra/ins_feature_extraction
+- **Important:** All ML integration scripts and results are excluded from version control. Only core analysis code, documentation, and configuration should be committed.
+- **.gitignore:** Updated to ensure no results or ML integration scripts are uploaded.
 
 ## Code Organization and Module Recommendations
 
@@ -198,4 +200,173 @@ The system extracts 61 essential features from INS spectra, organized into the f
 | Feature | Description | Units | ML Relevance |
 |---------|-------------|-------|--------------|
 | `mean_amplitude` | Average peak amplitude | a.u. | Overall spectral intensity |
+| `std_amplitude` | Standard deviation of amplitudes | a.u. | Amplitude variability |
+| `max_amplitude` | Maximum peak amplitude | a.u. | Strongest spectral feature |
+| `min_amplitude` | Minimum peak amplitude | a.u. | Weakest spectral feature |
+| `amplitude_range` | Range of amplitudes | a.u. | Dynamic range |
+| `amplitude_cv` | Coefficient of variation | dimensionless | Relative amplitude spread |
+| `amplitude_skewness` | Skewness of amplitude distribution | dimensionless | Amplitude asymmetry |
+| `amplitude_kurtosis` | Kurtosis of amplitude distribution | dimensionless | Amplitude peakedness |
+
+### 4. Width Features (8 features)
+| Feature | Description | Units | ML Relevance |
+|---------|-------------|-------|--------------|
+| `mean_width` | Average peak width (FWHM) | cm⁻¹ | Typical peak sharpness |
+| `std_width` | Standard deviation of widths | cm⁻¹ | Width variability |
+| `max_width` | Maximum peak width | cm⁻¹ | Broadest feature |
+| `min_width` | Minimum peak width | cm⁻¹ | Sharpest feature |
+| `width_range` | Range of peak widths | cm⁻¹ | Width diversity |
+| `width_cv` | Coefficient of variation | dimensionless | Relative width spread |
+| `width_skewness` | Skewness of width distribution | dimensionless | Width asymmetry |
+| `width_kurtosis` | Kurtosis of width distribution | dimensionless | Width peakedness |
+
+### 5. Area Features (8 features)
+| Feature | Description | Units | ML Relevance |
+|---------|-------------|-------|--------------|
+| `mean_area` | Average peak area | a.u.·cm⁻¹ | Typical peak intensity |
+| `std_area` | Standard deviation of areas | a.u.·cm⁻¹ | Area variability |
+| `max_area` | Maximum peak area | a.u.·cm⁻¹ | Strongest integrated feature |
+| `min_area` | Minimum peak area | a.u.·cm⁻¹ | Weakest integrated feature |
+| `area_range` | Range of peak areas | a.u.·cm⁻¹ | Area diversity |
+| `area_cv` | Coefficient of variation | dimensionless | Relative area spread |
+| `area_skewness` | Skewness of area distribution | dimensionless | Area asymmetry |
+| `area_kurtosis` | Kurtosis of area distribution | dimensionless | Area peakedness |
+
+### 6. Energy Region Analysis (6 features)
+| Feature | Description | Units | ML Relevance |
+|---------|-------------|-------|--------------|
+| `low_energy_peaks` | Peaks in 0-500 cm⁻¹ | count | Fundamental vibrations |
+| `mid_energy_peaks` | Peaks in 500-2000 cm⁻¹ | count | Combination bands |
+| `high_energy_peaks` | Peaks in 2000-3500 cm⁻¹ | count | Overtone vibrations |
+| `low_energy_fraction` | Fraction of peaks in low energy | dimensionless | Fundamental dominance |
+| `mid_energy_fraction` | Fraction of peaks in mid energy | dimensionless | Combination dominance |
+| `high_energy_fraction` | Fraction of peaks in high energy | dimensionless | Overtone dominance |
+
+### 7. Peak-to-Baseline Ratios (8 features)
+| Feature | Description | Units | ML Relevance |
+|---------|-------------|-------|--------------|
+| `mean_peak_baseline_ratio` | Average peak-to-baseline ratio | dimensionless | Signal quality |
+| `std_peak_baseline_ratio` | Standard deviation of ratios | dimensionless | Ratio variability |
+| `max_peak_baseline_ratio` | Maximum ratio | dimensionless | Best signal quality |
+| `min_peak_baseline_ratio` | Minimum ratio | dimensionless | Worst signal quality |
+| `ratio_range` | Range of ratios | dimensionless | Signal quality spread |
+| `ratio_cv` | Coefficient of variation | dimensionless | Relative ratio spread |
+| `ratio_skewness` | Skewness of ratio distribution | dimensionless | Ratio asymmetry |
+| `ratio_kurtosis` | Kurtosis of ratio distribution | dimensionless | Ratio peakedness |
+
+### 8. Baseline Analysis (6 features)
+| Feature | Description | Units | ML Relevance |
+|---------|-------------|-------|--------------|
+| `baseline_area` | Total baseline area | a.u.·cm⁻¹ | Background intensity |
+| `baseline_mean` | Average baseline value | a.u. | Background level |
+| `baseline_std` | Standard deviation of baseline | a.u. | Background variability |
+| `baseline_slope` | Linear baseline slope | a.u./cm⁻¹ | Background trend |
+| `baseline_r2` | Baseline fit R² | dimensionless | Baseline fit quality |
+| `baseline_rmse` | Baseline fit RMSE | a.u. | Baseline fit error |
+
+### 9. Fit Quality Metrics (4 features)
+| Feature | Description | Units | ML Relevance |
+|---------|-------------|-------|--------------|
+| `mean_r2` | Average peak fit R² | dimensionless | Overall fit quality |
+| `mean_rmse` | Average peak fit RMSE | a.u. | Overall fit error |
+| `fit_quality_score` | Composite fit quality | dimensionless | Combined quality metric |
+| `failed_fits` | Number of failed peak fits | count | Fit reliability |
+
+### 10. Advanced Statistical Features (6 features)
+| Feature | Description | Units | ML Relevance |
+|---------|-------------|-------|--------------|
+| `spectral_complexity` | Spectral complexity index | dimensionless | Overall complexity |
+| `peak_clustering` | Peak clustering coefficient | dimensionless | Peak distribution pattern |
+| `energy_efficiency` | Energy distribution efficiency | dimensionless | Energy utilization |
+| `spectral_entropy` | Spectral entropy | dimensionless | Information content |
+| `peak_symmetry` | Peak symmetry index | dimensionless | Spectral symmetry |
+| `spectral_regularity` | Spectral regularity index | dimensionless | Pattern regularity |
+
+## Usage Examples
+
+### Single File Analysis
+```python
+from src.core.enhanced_ml_peak_analyzer import EnhancedMLPeakAnalyzer
+from src.utils.enhanced_baseline_detection import EnhancedBaselineDetector
+
+# Initialize analyzer
+analyzer = EnhancedMLPeakAnalyzer()
+
+# Load and analyze spectrum
+spectrum_data = analyzer.load_spectrum('path/to/spectrum.csv')
+features = analyzer.extract_features(spectrum_data)
+
+# Save results
+analyzer.save_features(features, 'output_features.csv')
+analyzer.save_plots('output_plots/')
+```
+
+### Batch Processing
+```python
+from src.core.batch_ml_analysis import BatchMLAnalysis
+
+# Initialize batch processor
+batch_processor = BatchMLAnalysis()
+
+# Process all spectra in directory
+batch_processor.process_directory('input_spectra/')
+
+# Results saved to comprehensive_analysis_results/
+```
+
+### Baseline Detection
+```python
+from src.utils.enhanced_baseline_detection import EnhancedBaselineDetector
+
+# Initialize detector
+detector = EnhancedBaselineDetector()
+
+# Detect baseline with physics-aware method
+baseline = detector.detect_baseline_physics_aware(spectrum_data)
+
+# Compare multiple methods
+comparison = detector.compare_methods(spectrum_data)
+```
+
+## Configuration
+
+The system uses configuration files in `src/config/` to control analysis parameters:
+
+- **Peak Detection**: Sensitivity, minimum height, width constraints
+- **Baseline Detection**: Algorithm selection, parameter optimization
+- **Energy Ranges**: Analysis boundaries and region definitions
+- **Output Settings**: Plot styles, file formats, directory structure
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Ensure all tests pass
+6. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Citation
+
+If you use this system in your research, please cite:
+
+```bibtex
+@software{ins_ml_analysis_system,
+  title={INS Spectrum ML Feature Extraction},
+  author={Your Name},
+  year={2024},
+  url={https://github.com/toulik-maitra/ins_feature_extraction}
+}
+```
+
+## Support
+
+For questions, issues, or contributions:
+- Open an issue on GitHub
+- Check the documentation in `docs/`
+- Review the usage guide in `docs/USAGE_GUIDE.md`
 
