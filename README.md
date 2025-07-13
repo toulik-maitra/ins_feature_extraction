@@ -1,6 +1,6 @@
 # INS Spectrum ML Feature Extraction
 
-A comprehensive, automated workflow for analyzing Inelastic Neutron Scattering (INS) spectra and extracting machine learning-ready features. This system provides publication-quality analysis, robust peak detection, baseline detection, and extensive feature extraction optimized for ML applications.
+A comprehensive, automated workflow for analyzing Inelastic Neutron Scattering (INS) spectra and extracting machine learning-ready features. 
 
 ## Quick Start
 
