@@ -103,8 +103,6 @@ examples/ml_integration/              # ML integration scripts and outputs (excl
 ## Version Control and GitHub
 
 - **Repository:** https://github.com/toulik-maitra/ins_feature_extraction
-- **Important:** All ML integration scripts and results are excluded from version control. Only core analysis code, documentation, and configuration should be committed.
-- **.gitignore:** Updated to ensure no results or ML integration scripts are uploaded.
 
 ## Code Organization and Module Recommendations
 
