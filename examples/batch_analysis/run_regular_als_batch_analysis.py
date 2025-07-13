@@ -1,64 +1,26 @@
 #!/usr/bin/env python3
 """
-Batch analysis launcher for INS spectra (experimental and simulated).
-Organizes results in structured directories with physics-aware baseline detection.
+Non-interactive batch analysis launcher for INS spectra with regular ALS baseline detection.
+Organizes results in structured directories with regular ALS baseline detection.
 Automatically creates clean ML dataset after analysis.
 """
 
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
-from core.batch_ml_analysis import BatchMLAnalyzer
+from src.core.batch_ml_analysis import BatchMLAnalyzer
 
 # Import the clean ML dataset creation function
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'ml_integration'))
+sys.path.append(os.path.join(os.path.dirname(__file__), 'examples', 'ml_integration'))
 from create_clean_ml_dataset import create_clean_ml_dataset
-
-def get_baseline_method():
-    """Get baseline detection method from user input."""
-    print("\n" + "="*80)
-    print("BASELINE DETECTION METHOD SELECTION")
-    print("="*80)
-    print("Available baseline detection methods:")
-    print("1. physics_aware_als    - Physics-aware ALS (0-500: fundamentals, 500-3500: higher order) [DEFAULT]")
-    print("2. binned_als          - Binned ALS (0-500, 500-2000, 2000-3500 cm⁻¹)")
-    print("3. als                 - Regular ALS (global)")
-    print("4. dynamic_rolling     - Dynamic rolling minimum")
-    print("5. polynomial          - Polynomial fitting")
-    print("6. morphological       - Morphological operations")
-    print("="*80)
-    
-    while True:
-        try:
-            choice = input("Enter baseline method number (1-6) or press Enter for default (1): ").strip()
-            if choice == "":
-                return "physics_aware_als"
-            
-            choice = int(choice)
-            if choice == 1:
-                return "physics_aware_als"
-            elif choice == 2:
-                return "binned_als"
-            elif choice == 3:
-                return "als"
-            elif choice == 4:
-                return "dynamic_rolling"
-            elif choice == 5:
-                return "polynomial"
-            elif choice == 6:
-                return "morphological"
-            else:
-                print("Invalid choice. Please enter a number between 1-6.")
-        except ValueError:
-            print("Invalid input. Please enter a number between 1-6.")
 
 # Define paths
 simulated_dir = "/Users/toulikmaitra/Documents/UC Davis/1. Projects/Molecule Analysis/24- Structural Entropy/3- Anthracene/INS_spectra_all"
 experimental_file = "/Users/toulikmaitra/Documents/UC Davis/1. Projects/Molecule Analysis/3-Peak and Background detection/Experimental_INS_files/Normalised_Data/Anthracene_INS_Experimental.csv"
 
 print("="*80)
-print("BATCH ANALYSIS WITH PHYSICS-AWARE BASELINE DETECTION")
+print("BATCH ANALYSIS WITH REGULAR ALS BASELINE DETECTION")
 print("="*80)
 print("Peak detection parameters:")
 print("  - Distance: 2 (exp), 5 (sim)")
@@ -67,14 +29,15 @@ print("  - Width: 1 (exp), 2 (sim)")
 print("  - Smooth window: 3 (all)")
 print("="*80)
 
-# Get baseline method from user
-baseline_method = get_baseline_method()
-
-print(f"\nSelected baseline method: {baseline_method}")
+# Use regular ALS baseline method
+baseline_method = "als"
+print(f"\nUsing baseline method: {baseline_method}")
+print("  - Global ALS baseline detection")
+print("  - Single set of parameters for entire spectrum")
 print("="*80)
 
-# Initialize batch analyzer
-batch_analyzer = BatchMLAnalyzer(output_dir="comprehensive_analysis_results")
+# Initialize batch analyzer with different output directory
+batch_analyzer = BatchMLAnalyzer(output_dir="comprehensive_analysis_results_regular_als")
 
 # Analyze experimental spectrum
 if os.path.exists(experimental_file):
@@ -101,7 +64,7 @@ print("\n" + "="*80)
 print("ANALYSIS COMPLETED!")
 print("="*80)
 print("Results organized in:")
-print("  comprehensive_analysis_results/")
+print("  comprehensive_analysis_results_regular_als/")
 print("  ├── plots/")
 print("  │   ├── main_analysis/      - Main spectrum + fit plots")
 print("  │   ├── baseline_detection/ - Baseline analysis plots")
@@ -119,18 +82,18 @@ print("="*80)
 
 try:
     # Change to the project root directory for the ML dataset creation
-    project_root = os.path.join(os.path.dirname(__file__), '..', '..')
+    project_root = os.path.dirname(__file__)
     original_dir = os.getcwd()
     os.chdir(project_root)
     
-    # Create clean ML dataset
-    clean_dataset = create_clean_ml_dataset()
+    # Create clean ML dataset with the new output directory
+    clean_dataset = create_clean_ml_dataset(output_dir="comprehensive_analysis_results_regular_als")
     
     if clean_dataset is not None:
         print("\n" + "="*80)
         print("CLEAN ML DATASET CREATED SUCCESSFULLY!")
         print("="*80)
-        print("File: comprehensive_analysis_results/features/ml_dataset_clean.csv")
+        print("File: comprehensive_analysis_results_regular_als/features/ml_dataset_clean.csv")
         print(f"Features: {len(clean_dataset.columns)}")
         print(f"Samples: {len(clean_dataset)}")
         print("="*80)
@@ -148,7 +111,7 @@ print("\n" + "="*80)
 print("BATCH ANALYSIS WORKFLOW COMPLETE!")
 print("="*80)
 print("Next steps:")
-print("1. Check comprehensive_analysis_results/features/ml_dataset_clean.csv")
-print("2. Review plots in comprehensive_analysis_results/plots/")
+print("1. Check comprehensive_analysis_results_regular_als/features/ml_dataset_clean.csv")
+print("2. Review plots in comprehensive_analysis_results_regular_als/plots/")
 print("3. Use the clean dataset for machine learning analysis")
 print("="*80) 

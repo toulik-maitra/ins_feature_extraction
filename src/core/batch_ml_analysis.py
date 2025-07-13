@@ -61,7 +61,7 @@ class BatchMLAnalyzer:
         self.all_features = []
         self.analysis_log = []
         
-    def analyze_single_file(self, filepath, molecule_name=None, plot_individual=True, baseline_detector_type='dynamic_rolling', is_experimental=False):
+    def analyze_single_file(self, filepath, molecule_name=None, plot_individual=True, baseline_detector_type='physics_aware_als', is_experimental=False):
         """
         Analyze a single INS spectrum file.
         
@@ -196,7 +196,7 @@ class BatchMLAnalyzer:
             }
             return None, log_entry
     
-    def analyze_directory(self, directory_path, file_pattern="*.csv", plot_individual=False, baseline_detector_type='dynamic_rolling', is_experimental=False):
+    def analyze_directory(self, directory_path, file_pattern="*.csv", plot_individual=False, baseline_detector_type='physics_aware_als', is_experimental=False):
         """
         Analyze all CSV files in a directory.
         

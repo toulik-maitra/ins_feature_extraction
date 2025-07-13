@@ -29,7 +29,7 @@ warnings.filterwarnings('ignore')
 class INSMLAnalyzer:
     """Machine Learning analyzer for INS spectral features."""
     
-    def __init__(self, features_file="comprehensive_analysis_results/features/ml_dataset.csv"):
+    def __init__(self, features_file="../../comprehensive_analysis_results/features/ml_dataset.csv"):
         """
         Initialize the ML analyzer.
         
@@ -474,11 +474,11 @@ def main():
         print("load features with a target column:")
         print("ml_analyzer.load_features(target_column='your_target')")
         
-    except FileNotFoundError:
-        print("\n✗ Features file not found.")
+    except (FileNotFoundError, AttributeError) as e:
+        print(f"\n✗ Error: {e}")
         print("\nTo create a features file:")
         print("1. Run INS analysis on your spectra")
-        print("2. Check the ml_analysis_results/features/ directory")
+        print("2. Check the comprehensive_analysis_results/features/ directory")
         print("3. Ensure you have a ml_dataset.csv file")
         print("\nExample:")
         print("python src/core/batch_ml_analysis.py --directory path/to/spectra/")

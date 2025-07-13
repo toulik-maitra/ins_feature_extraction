@@ -1,3 +1,21 @@
+"""
+ML Peak Analyzer (LEGACY)
+=========================
+
+DEPRECATION WARNING: This module is deprecated. 
+Please use enhanced_ml_peak_analyzer.py for new development.
+
+Advanced Gaussian-based peak analyzer optimized for machine learning feature extraction
+and publication-quality visualization.
+"""
+
+import warnings
+warnings.warn(
+    "ml_peak_analyzer.py is deprecated. Use enhanced_ml_peak_analyzer.py instead.",
+    DeprecationWarning,
+    stacklevel=2
+)
+
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -6,7 +24,6 @@ from scipy.signal import find_peaks, savgol_filter
 from scipy.stats import gaussian_kde
 import seaborn as sns
 from typing import Dict, List, Tuple, Optional, Union
-import warnings
 import sys
 import os
 warnings.filterwarnings('ignore')

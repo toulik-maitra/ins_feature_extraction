@@ -157,7 +157,14 @@ Desktop.ini
 *.tmp
 *.temp
 
-# ML Integration files (research ideas and examples)
+# ML Integration scripts and results
 examples/ml_integration/
 ml_integration_results/
-ml_analysis_results/ 
+ml_analysis_results/
+
+# Exclude all analysis results and features
+comprehensive_analysis_results/
+comprehensive_analysis_results/features/
+comprehensive_analysis_results/summaries/
+comprehensive_analysis_results/logs/
+comprehensive_analysis_results/plots/ 

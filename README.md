@@ -69,25 +69,15 @@ INS_ML_Analysis_System/
     └── logs/                          # Processing logs
 ```
 
-## Installation
-
-### Prerequisites
-- Python 3.8+
-- NumPy, SciPy, Pandas, Matplotlib, Scikit-learn, Seaborn
-
-### Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### Development Setup
-```bash
-pip install -e .
-```
-
 ## Output Organization
 
-The system creates a comprehensive, organized output structure:
+The system creates a comprehensive, organized output structure. **Note:** All results, features, and ML integration scripts are excluded from version control via `.gitignore` to keep the repository clean. Do not upload any files from these directories:
+
+- `comprehensive_analysis_results/` (all subdirectories)
+- `ml_integration_results/`
+- `examples/ml_integration/`
+
+See `.gitignore` for details.
 
 ```
 comprehensive_analysis_results/
@@ -103,6 +93,56 @@ comprehensive_analysis_results/
 ├── summaries/                        # Analysis summaries
 │   └── analysis_summary.csv          # Summary statistics
 └── logs/                             # Processing logs
+ml_integration_results/               # ML analysis results (excluded from git)
+examples/ml_integration/              # ML integration scripts and outputs (excluded from git)
+```
+
+## Version Control and GitHub
+
+- **Repository:** https://github.com/[your-username]/ins_feature_extraction
+- **Important:** All ML integration scripts and results are excluded from version control. Only core analysis code, documentation, and configuration should be committed.
+- **.gitignore:** Updated to ensure no results or ML integration scripts are uploaded.
+
+## Code Organization and Module Recommendations
+
+### **Recommended Modules (Use These)**
+- **`src/core/enhanced_ml_peak_analyzer.py`** - Enhanced ML peak analyzer with optimization
+- **`src/utils/enhanced_baseline_detection.py`** - Enhanced baseline detection with validation
+- **`examples/single_file/comprehensive_test_suite.py`** - Unified test suite (consolidates multiple test files)
+
+### **Legacy Modules (Deprecated)**
+- **`src/core/ml_peak_analyzer.py`** - Basic ML peak analyzer (deprecated)
+- **`src/utils/baseline_detection.py`** - Basic baseline detection (deprecated)
+- **`examples/single_file/test_ml_analyzer.py`** - Basic test file (replaced by comprehensive_test_suite.py)
+- **`examples/single_file/enhanced_baseline_demo.py`** - Standalone demo (functionality integrated into comprehensive_test_suite.py)
+
+### **Code Consolidation**
+The codebase has been consolidated to remove duplications:
+- **Unified test suite** replaces multiple test files with overlapping functionality
+- **Enhanced modules** provide all functionality of legacy modules plus additional features
+- **Deprecation warnings** guide users to recommended modules
+- **Consolidated examples** reduce code repetition
+
+### **Migration Guide**
+If you're using legacy modules, migrate to:
+- `ml_peak_analyzer.py` → `enhanced_ml_peak_analyzer.py`
+- `baseline_detection.py` → `enhanced_baseline_detection.py`
+- Individual test files → `comprehensive_test_suite.py`
+
+## Installation
+
+### Prerequisites
+- Python 3.8+
+- NumPy, SciPy, Pandas, Matplotlib, Scikit-learn, Seaborn
+
+### Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### Development Setup
+```bash
+pip install -e .
 ```
 
 ## Key Features
