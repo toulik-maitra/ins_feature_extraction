@@ -1,6 +1,6 @@
 # INS Spectrum ML Feature Extraction
 
-A comprehensive, automated workflow for analyzing Inelastic Neutron Scattering (INS) spectra and extracting machine learning-ready features. 
+A comprehensive, automated workflow for analyzing Inelastic Neutron Scattering (INS) spectra and extracting machine learning-ready features. This system was developed to streamline the analysis of INS data and provide researchers with robust, reproducible feature extraction capabilities.
 
 ## Quick Start
 
@@ -18,7 +18,7 @@ python3 run_complete_analysis.py   # Runs everything automatically
 ### Individual Steps
 ```bash
 # Single file analysis
-python3 examples/single_file/test_ml_analyzer.py
+python3 examples/single_file/comprehensive_test_suite.py
 
 # Batch analysis (includes automatic ML dataset creation)
 python3 examples/batch_processing/run_batch_analysis.py
@@ -39,10 +39,12 @@ INS_ML_Analysis_System/
 ├── run_complete_analysis.py           # Complete workflow runner
 ├── src/                               # Source code
 │   ├── core/                          # Core analysis modules
-│   │   ├── ml_peak_analyzer.py        # Main analyzer class
+│   │   ├── enhanced_ml_peak_analyzer.py # Enhanced analyzer class (recommended)
+│   │   ├── ml_peak_analyzer.py        # Legacy analyzer class (deprecated)
 │   │   └── batch_ml_analysis.py       # Batch processing workflow
 │   ├── utils/                         # Utility functions
-│   │   ├── baseline_detection.py      # Baseline detection algorithms
+│   │   ├── enhanced_baseline_detection.py # Enhanced baseline detection (recommended)
+│   │   ├── baseline_detection.py      # Legacy baseline detection (deprecated)
 │   │   └── run_single_INS_analysis.py # Single file runner
 │   ├── visualization/                 # Plotting utilities
 │   └── config/                        # Configuration files
@@ -50,14 +52,15 @@ INS_ML_Analysis_System/
 │       └── analysis_config.py         # Configuration settings
 ├── examples/                          # Example scripts
 │   ├── single_file/                   # Single file analysis examples
-│   │   ├── test_ml_analyzer.py        # Single file analysis example
-│   │   └── test_baseline_features.py  # Baseline detection example
+│   │   ├── comprehensive_test_suite.py # Unified test suite (recommended)
+│   │   ├── test_ml_analyzer.py        # Legacy test file (deprecated)
+│   │   └── test_baseline_features.py  # Legacy baseline detection example
 │   ├── batch_processing/              # Batch processing examples
 │   │   ├── run_batch_analysis.py      # Main batch analysis script
 │   │   └── run_batch_demo.py          # Batch processing demo
-│   └── ml_integration/                # ML integration examples
-│       ├── create_clean_ml_dataset.py # Clean ML dataset generator
-│       └── ml_example.py              # ML integration example
+│   ├── batch_analysis/                # Batch analysis scripts
+│   ├── dev_scripts/                   # Development and test scripts
+│   └── ml_integration/                # ML integration examples (gitignored)
 ├── docs/                              # Documentation
 │   ├── USAGE_GUIDE.md                 # Detailed usage instructions
 │   ├── TECHNICAL_DOCS.md              # Technical documentation
@@ -71,13 +74,13 @@ INS_ML_Analysis_System/
 
 ## Output Organization
 
-The system creates a comprehensive, organized output structure. **Note:** All results, features, and ML integration scripts are excluded from version control via `.gitignore` to keep the repository clean. Do not upload any files from these directories:
+The system creates a comprehensive, organized output structure. Note that all results, features, and ML integration scripts are excluded from version control via `.gitignore` to keep the repository clean. Do not upload any files from these directories:
 
 - `comprehensive_analysis_results/` (all subdirectories)
 - `ml_integration_results/`
 - `examples/ml_integration/`
 
-See `.gitignore` for details.
+See `.gitignore` for complete details.
 
 ```
 comprehensive_analysis_results/
@@ -99,31 +102,31 @@ examples/ml_integration/              # ML integration scripts and outputs (excl
 
 ## Version Control and GitHub
 
-- **Repository:** https://github.com/[your-username]/ins_feature_extraction
+- **Repository:** https://github.com/toulik-maitra/ins_feature_extraction
 - **Important:** All ML integration scripts and results are excluded from version control. Only core analysis code, documentation, and configuration should be committed.
 - **.gitignore:** Updated to ensure no results or ML integration scripts are uploaded.
 
 ## Code Organization and Module Recommendations
 
-### **Recommended Modules (Use These)**
-- **`src/core/enhanced_ml_peak_analyzer.py`** - Enhanced ML peak analyzer with optimization
-- **`src/utils/enhanced_baseline_detection.py`** - Enhanced baseline detection with validation
-- **`examples/single_file/comprehensive_test_suite.py`** - Unified test suite (consolidates multiple test files)
+### Recommended Modules (Use These)
+- **`src/core/enhanced_ml_peak_analyzer.py`** - Enhanced ML peak analyzer with optimization capabilities
+- **`src/utils/enhanced_baseline_detection.py`** - Enhanced baseline detection with validation and parameter optimization
+- **`examples/single_file/comprehensive_test_suite.py`** - Unified test suite that consolidates multiple test files
 
-### **Legacy Modules (Deprecated)**
-- **`src/core/ml_peak_analyzer.py`** - Basic ML peak analyzer (deprecated)
-- **`src/utils/baseline_detection.py`** - Basic baseline detection (deprecated)
-- **`examples/single_file/test_ml_analyzer.py`** - Basic test file (replaced by comprehensive_test_suite.py)
-- **`examples/single_file/enhanced_baseline_demo.py`** - Standalone demo (functionality integrated into comprehensive_test_suite.py)
+### Legacy Modules (Deprecated)
+- **`src/core/ml_peak_analyzer.py`** - Basic ML peak analyzer (deprecated, use enhanced version)
+- **`src/utils/baseline_detection.py`** - Basic baseline detection (deprecated, use enhanced version)
+- **`examples/single_file/test_ml_analyzer.py`** - Basic test file (replaced by comprehensive test suite)
+- **`examples/single_file/enhanced_baseline_demo.py`** - Standalone demo (functionality integrated into comprehensive test suite)
 
-### **Code Consolidation**
-The codebase has been consolidated to remove duplications:
+### Code Consolidation
+The codebase has been consolidated to remove duplications and improve maintainability:
 - **Unified test suite** replaces multiple test files with overlapping functionality
 - **Enhanced modules** provide all functionality of legacy modules plus additional features
 - **Deprecation warnings** guide users to recommended modules
-- **Consolidated examples** reduce code repetition
+- **Consolidated examples** reduce code repetition and improve organization
 
-### **Migration Guide**
+### Migration Guide
 If you're using legacy modules, migrate to:
 - `ml_peak_analyzer.py` → `enhanced_ml_peak_analyzer.py`
 - `baseline_detection.py` → `enhanced_baseline_detection.py`
@@ -173,10 +176,9 @@ pip install -e .
 - **Trend Analysis**: Data trend line vs instrument line comparison
 - **Quality Assessment**: Peak width relative to instrument resolution
 
-
 ## Comprehensive Feature Documentation
 
-The system extracts **61 essential features** from INS spectra, organized into the following categories:
+The system extracts 61 essential features from INS spectra, organized into the following categories:
 
 ### 1. Sample Identification
 | Feature | Description | ML Relevance |
@@ -198,122 +200,4 @@ The system extracts **61 essential features** from INS spectra, organized into t
 | Feature | Description | Units | ML Relevance |
 |---------|-------------|-------|--------------|
 | `mean_amplitude` | Average peak amplitude | a.u. | Overall spectral intensity |
-| `std_amplitude` | Standard deviation of amplitudes | a.u. | Amplitude variability |
-| `max_amplitude` | Maximum peak amplitude | a.u. | Strongest vibrational mode |
-| `min_amplitude` | Minimum peak amplitude | a.u. | Weakest vibrational mode |
-| `amplitude_range` | Range of amplitudes | a.u. | Spectral contrast |
-| `amplitude_cv` | Coefficient of variation | dimensionless | Relative amplitude spread |
-| `amplitude_skewness` | Distribution skewness | dimensionless | Amplitude asymmetry |
-| `amplitude_kurtosis` | Distribution kurtosis | dimensionless | Amplitude peakedness |
-
-### 4. Width Features (8 features)
-| Feature | Description | Units | ML Relevance |
-|---------|-------------|-------|--------------|
-| `mean_fwhm` | Average peak width | cm⁻¹ | Typical vibrational broadening |
-| `std_fwhm` | Standard deviation of widths | cm⁻¹ | Width variability |
-| `max_fwhm` | Maximum peak width | cm⁻¹ | Broadest vibrational mode |
-| `min_fwhm` | Minimum peak width | cm⁻¹ | Sharpest vibrational mode |
-| `fwhm_range` | Range of peak widths | cm⁻¹ | Width diversity |
-| `fwhm_cv` | Coefficient of variation | dimensionless | Relative width spread |
-| `fwhm_skewness` | Distribution skewness | dimensionless | Width asymmetry |
-| `fwhm_kurtosis` | Distribution kurtosis | dimensionless | Width peakedness |
-
-### 5. Area Features (17 features)
-| Feature | Description | Units | ML Relevance |
-|---------|-------------|-------|--------------|
-| `total_area` | Sum of all peak areas | a.u.·cm⁻¹ | Total spectral intensity |
-| `mean_area` | Average peak area | a.u.·cm⁻¹ | Typical peak contribution |
-| `std_area` | Standard deviation of areas | a.u.·cm⁻¹ | Area variability |
-| `area_cv` | Coefficient of variation | dimensionless | Relative area spread |
-| `max_area` | Maximum peak area | a.u.·cm⁻¹ | Dominant vibrational mode |
-| `min_area` | Minimum peak area | a.u.·cm⁻¹ | Minor vibrational mode |
-| `area_range` | Range of peak areas | a.u.·cm⁻¹ | Area diversity |
-| `area_skewness` | Distribution skewness | dimensionless | Area asymmetry |
-| `area_kurtosis` | Distribution kurtosis | dimensionless | Area peakedness |
-| `largest_peak_area` | Largest individual peak area | a.u.·cm⁻¹ | Primary vibrational mode |
-| `smallest_peak_area` | Smallest individual peak area | a.u.·cm⁻¹ | Minor vibrational mode |
-| `largest_peak_area_fraction` | Fraction in largest peak | dimensionless | Primary mode dominance |
-| `area_median` | Median peak area | a.u.·cm⁻¹ | Central tendency |
-| `area_percentile_25` | 25th percentile area | a.u.·cm⁻¹ | Lower quartile |
-| `area_percentile_75` | 75th percentile area | a.u.·cm⁻¹ | Upper quartile |
-| `area_iqr` | Interquartile range | a.u.·cm⁻¹ | Area spread |
-| `non_peak_area` | Area not in peaks | a.u.·cm⁻¹ | Background contribution |
-| `non_peak_area_fraction` | Fraction in baseline | dimensionless | Background level |
-
-### 6. Baseline Features (11 features)
-| Feature | Description | Units | ML Relevance |
-|---------|-------------|-------|--------------|
-| `detected_baseline_area` | Area under detected baseline | a.u.·cm⁻¹ | Baseline contribution |
-| `detected_baseline_area_fraction` | Baseline area fraction | dimensionless | Baseline level |
-| `signal_above_baseline_area` | Area above baseline | a.u.·cm⁻¹ | Net signal intensity |
-| `signal_above_baseline_fraction` | Signal fraction above baseline | dimensionless | Signal quality |
-| `baseline` | Baseline offset | a.u. | Background level |
-
-### 7. Peak-to-Baseline Ratio Features (7 features)
-| Feature | Description | Units | ML Relevance |
-|---------|-------------|-------|--------------|
-| `mean_peak_to_baseline_ratio` | Average peak-to-baseline ratio | dimensionless | Signal quality indicator |
-| `std_peak_to_baseline_ratio` | Standard deviation of ratios | dimensionless | Ratio variability |
-| `max_peak_to_baseline_ratio` | Maximum peak-to-baseline ratio | dimensionless | Strongest signal peak |
-| `min_peak_to_baseline_ratio` | Minimum peak-to-baseline ratio | dimensionless | Weakest signal peak |
-| `median_peak_to_baseline_ratio` | Median peak-to-baseline ratio | dimensionless | Central ratio tendency |
-| `peak_to_baseline_ratio_cv` | Coefficient of variation of ratios | dimensionless | Relative ratio spread |
-| `num_ratio_outliers_removed` | Number of outliers removed | count | Data quality indicator |
-
-### 8. Energy Region Features (3 features)
-| Feature | Description | Units | ML Relevance |
-|---------|-------------|-------|--------------|
-| `low_energy_peaks` | Peaks below 500 cm⁻¹ | count | Low-frequency modes |
-| `mid_energy_peaks` | Peaks 500-2000 cm⁻¹ | count | Mid-frequency modes |
-| `high_energy_peaks` | Peaks above 2000 cm⁻¹ | count | High-frequency modes |
-
-### 9. Peak Spacing Features (2 features)
-| Feature | Description | Units | ML Relevance |
-|---------|-------------|-------|--------------|
-| `mean_peak_spacing` | Average distance between peaks | cm⁻¹ | Peak distribution |
-| `std_peak_spacing` | Standard deviation of spacings | cm⁻¹ | Spacing regularity |
-
-### 10. Fit Quality Features (3 features)
-| Feature | Description | Units | ML Relevance |
-|---------|-------------|-------|--------------|
-| `r_squared` | R-squared value of fit | dimensionless | Fit quality |
-| `rmse` | Root mean square error | a.u. | Fit accuracy |
-| `baseline` | Baseline offset | a.u. | Background level |
-
-## Usage Examples
-
-### Single File Analysis
-```python
-from src.core.ml_peak_analyzer import MLPeakAnalyzer
-
-# Initialize analyzer
-analyzer = MLPeakAnalyzer()
-
-# Analyze a single file
-results = analyzer.analyze_file('path/to/spectrum.txt')
-```
-
-### Batch Analysis
-```python
-from src.core.batch_ml_analysis import BatchMLAnalyzer
-
-# Initialize batch analyzer
-batch_analyzer = BatchMLAnalyzer(output_dir="results")
-
-# Analyze directory of spectra
-batch_analyzer.analyze_directory("path/to/spectra/")
-```
-
-## Citation
-
-If you use this system in your research, please cite:
-
-```bibtex
-@software{ins_feature_extraction,
-  title={INS Spectrum ML Feature Extraction},
-  author={Toulik Maitra},
-  year={2025},
-  url={https://github.com/toulik-maitra/ins_feature_extraction.git}
-}
-```
 
