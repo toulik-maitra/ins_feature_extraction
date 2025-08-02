@@ -410,6 +410,9 @@ class MLPeakAnalyzer:
             'mid_energy_peaks': len([c for c in centers if 500 <= c < 2000]),
             'high_energy_peaks': len([c for c in centers if c >= 2000]),
             
+            # Enhanced energy region features
+            **self._calculate_energy_region_features(centers, amplitudes, fwhms, areas),
+            
             # Individual peak features (for detailed analysis)
             'peak_centers': np.array(centers),
             'peak_amplitudes': np.array(amplitudes),
@@ -547,6 +550,189 @@ class MLPeakAnalyzer:
         sorted_centers = np.sort(centers)
         spacings = np.diff(sorted_centers)
         return np.std(spacings)
+    
+    def _calculate_energy_region_features(self, centers: List[float], amplitudes: List[float], 
+                                        fwhms: List[float], areas: List[float]) -> Dict[str, float]:
+        """
+        Calculate comprehensive features for each energy region.
+        
+        Parameters:
+        -----------
+        centers : List[float]
+            Peak center positions
+        amplitudes : List[float]
+            Peak amplitudes
+        fwhms : List[float]
+            Peak full-width half-maximum values
+        areas : List[float]
+            Peak areas
+            
+        Returns:
+        --------
+        Dict[str, float]
+            Dictionary of energy region features
+        """
+        # Define energy region boundaries
+        low_bound = 500
+        mid_bound = 2000
+        
+        # Initialize feature dictionary
+        features = {}
+        
+        # Process each energy region
+        regions = [
+            ('low', 0, low_bound),
+            ('mid', low_bound, mid_bound),
+            ('high', mid_bound, 3500)
+        ]
+        
+        for region_name, min_energy, max_energy in regions:
+            # Find peaks in this region
+            region_mask = [(min_energy <= c < max_energy) for c in centers]
+            region_centers = [c for i, c in enumerate(centers) if region_mask[i]]
+            region_amplitudes = [a for i, a in enumerate(amplitudes) if region_mask[i]]
+            region_fwhms = [f for i, f in enumerate(fwhms) if region_mask[i]]
+            region_areas = [area for i, area in enumerate(areas) if region_mask[i]]
+            
+            # Basic count features
+            features[f'{region_name}_energy_peak_count'] = len(region_centers)
+            
+            if len(region_centers) == 0:
+                # No peaks in this region - set all features to 0
+                features.update({
+                    f'{region_name}_energy_amplitude_mean': 0.0,
+                    f'{region_name}_energy_amplitude_std': 0.0,
+                    f'{region_name}_energy_amplitude_max': 0.0,
+                    f'{region_name}_energy_amplitude_min': 0.0,
+                    f'{region_name}_energy_amplitude_median': 0.0,
+                    f'{region_name}_energy_amplitude_skewness': 0.0,
+                    f'{region_name}_energy_amplitude_kurtosis': 0.0,
+                    f'{region_name}_energy_fwhm_mean': 0.0,
+                    f'{region_name}_energy_fwhm_std': 0.0,
+                    f'{region_name}_energy_fwhm_max': 0.0,
+                    f'{region_name}_energy_fwhm_min': 0.0,
+                    f'{region_name}_energy_fwhm_median': 0.0,
+                    f'{region_name}_energy_area_mean': 0.0,
+                    f'{region_name}_energy_area_std': 0.0,
+                    f'{region_name}_energy_area_max': 0.0,
+                    f'{region_name}_energy_area_min': 0.0,
+                    f'{region_name}_energy_area_median': 0.0,
+                    f'{region_name}_energy_area_total': 0.0,
+                    f'{region_name}_energy_area_fraction': 0.0,
+                    f'{region_name}_energy_center_mean': 0.0,
+                    f'{region_name}_energy_center_std': 0.0,
+                    f'{region_name}_energy_center_range': 0.0,
+                    f'{region_name}_energy_center_span': 0.0,
+                    f'{region_name}_energy_peak_density': 0.0,
+                    f'{region_name}_energy_amplitude_dominance': 0.0,
+                    f'{region_name}_energy_area_dominance': 0.0,
+                    f'{region_name}_energy_peak_spacing_mean': 0.0,
+                    f'{region_name}_energy_peak_spacing_std': 0.0,
+                    f'{region_name}_energy_amplitude_cv': 0.0,
+                    f'{region_name}_energy_fwhm_cv': 0.0,
+                    f'{region_name}_energy_area_cv': 0.0,
+                    f'{region_name}_energy_center_cv': 0.0,
+                    f'{region_name}_energy_amplitude_iqr': 0.0,
+                    f'{region_name}_energy_fwhm_iqr': 0.0,
+                    f'{region_name}_energy_area_iqr': 0.0,
+                    f'{region_name}_energy_center_iqr': 0.0,
+                    f'{region_name}_energy_amplitude_percentile_25': 0.0,
+                    f'{region_name}_energy_amplitude_percentile_75': 0.0,
+                    f'{region_name}_energy_fwhm_percentile_25': 0.0,
+                    f'{region_name}_energy_fwhm_percentile_75': 0.0,
+                    f'{region_name}_energy_area_percentile_25': 0.0,
+                    f'{region_name}_energy_area_percentile_75': 0.0,
+                    f'{region_name}_energy_center_percentile_25': 0.0,
+                    f'{region_name}_energy_center_percentile_75': 0.0,
+                })
+                continue
+            
+            # Amplitude features
+            features.update({
+                f'{region_name}_energy_amplitude_mean': np.mean(region_amplitudes),
+                f'{region_name}_energy_amplitude_std': np.std(region_amplitudes),
+                f'{region_name}_energy_amplitude_max': np.max(region_amplitudes),
+                f'{region_name}_energy_amplitude_min': np.min(region_amplitudes),
+                f'{region_name}_energy_amplitude_median': np.median(region_amplitudes),
+                f'{region_name}_energy_amplitude_skewness': self._calculate_skewness(region_amplitudes),
+                f'{region_name}_energy_amplitude_kurtosis': self._calculate_kurtosis(region_amplitudes),
+                f'{region_name}_energy_amplitude_cv': np.std(region_amplitudes) / np.mean(region_amplitudes) if np.mean(region_amplitudes) > 0 else 0.0,
+                f'{region_name}_energy_amplitude_iqr': np.percentile(region_amplitudes, 75) - np.percentile(region_amplitudes, 25),
+                f'{region_name}_energy_amplitude_percentile_25': np.percentile(region_amplitudes, 25),
+                f'{region_name}_energy_amplitude_percentile_75': np.percentile(region_amplitudes, 75),
+            })
+            
+            # FWHM features
+            features.update({
+                f'{region_name}_energy_fwhm_mean': np.mean(region_fwhms),
+                f'{region_name}_energy_fwhm_std': np.std(region_fwhms),
+                f'{region_name}_energy_fwhm_max': np.max(region_fwhms),
+                f'{region_name}_energy_fwhm_min': np.min(region_fwhms),
+                f'{region_name}_energy_fwhm_median': np.median(region_fwhms),
+                f'{region_name}_energy_fwhm_cv': np.std(region_fwhms) / np.mean(region_fwhms) if np.mean(region_fwhms) > 0 else 0.0,
+                f'{region_name}_energy_fwhm_iqr': np.percentile(region_fwhms, 75) - np.percentile(region_fwhms, 25),
+                f'{region_name}_energy_fwhm_percentile_25': np.percentile(region_fwhms, 25),
+                f'{region_name}_energy_fwhm_percentile_75': np.percentile(region_fwhms, 75),
+            })
+            
+            # Area features
+            total_region_area = np.sum(region_areas)
+            features.update({
+                f'{region_name}_energy_area_mean': np.mean(region_areas),
+                f'{region_name}_energy_area_std': np.std(region_areas),
+                f'{region_name}_energy_area_max': np.max(region_areas),
+                f'{region_name}_energy_area_min': np.min(region_areas),
+                f'{region_name}_energy_area_median': np.median(region_areas),
+                f'{region_name}_energy_area_total': total_region_area,
+                f'{region_name}_energy_area_cv': np.std(region_areas) / np.mean(region_areas) if np.mean(region_areas) > 0 else 0.0,
+                f'{region_name}_energy_area_iqr': np.percentile(region_areas, 75) - np.percentile(region_areas, 25),
+                f'{region_name}_energy_area_percentile_25': np.percentile(region_areas, 25),
+                f'{region_name}_energy_area_percentile_75': np.percentile(region_areas, 75),
+            })
+            
+            # Center position features
+            features.update({
+                f'{region_name}_energy_center_mean': np.mean(region_centers),
+                f'{region_name}_energy_center_std': np.std(region_centers),
+                f'{region_name}_energy_center_range': np.max(region_centers) - np.min(region_centers),
+                f'{region_name}_energy_center_span': np.max(region_centers) - np.min(region_centers),
+                f'{region_name}_energy_center_cv': np.std(region_centers) / np.mean(region_centers) if np.mean(region_centers) > 0 else 0.0,
+                f'{region_name}_energy_center_iqr': np.percentile(region_centers, 75) - np.percentile(region_centers, 25),
+                f'{region_name}_energy_center_percentile_25': np.percentile(region_centers, 25),
+                f'{region_name}_energy_center_percentile_75': np.percentile(region_centers, 75),
+            })
+            
+            # Peak spacing features (for regions with multiple peaks)
+            if len(region_centers) > 1:
+                features.update({
+                    f'{region_name}_energy_peak_spacing_mean': self._calculate_mean_spacing(region_centers),
+                    f'{region_name}_energy_peak_spacing_std': self._calculate_std_spacing(region_centers),
+                })
+            else:
+                features.update({
+                    f'{region_name}_energy_peak_spacing_mean': 0.0,
+                    f'{region_name}_energy_peak_spacing_std': 0.0,
+                })
+            
+            # Density and dominance features
+            region_width = max_energy - min_energy
+            features.update({
+                f'{region_name}_energy_peak_density': len(region_centers) / region_width if region_width > 0 else 0.0,
+            })
+        
+        # Calculate dominance features (relative to total spectrum)
+        total_amplitude = np.sum(amplitudes)
+        total_area = np.sum(areas)
+        
+        for region_name, min_energy, max_energy in regions:
+            region_mask = [(min_energy <= c < max_energy) for c in centers]
+            region_amplitudes = [a for i, a in enumerate(amplitudes) if region_mask[i]]
+            region_areas = [area for i, area in enumerate(areas) if region_mask[i]]
+            
+            features[f'{region_name}_energy_amplitude_dominance'] = np.sum(region_amplitudes) / total_amplitude if total_amplitude > 0 else 0.0
+            features[f'{region_name}_energy_area_dominance'] = np.sum(region_areas) / total_area if total_area > 0 else 0.0
+        
+        return features
     
     def plot_publication_quality(self, save_path: Optional[str] = None,
                                dpi: int = 300, figsize: Tuple[int, int] = (12, 10)) -> None:

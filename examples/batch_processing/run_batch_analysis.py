@@ -10,6 +10,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
 from core.batch_ml_analysis import BatchMLAnalyzer
+from config.output_config import get_output_dir, create_output_structure, print_output_structure
 
 # Import the clean ML dataset creation function
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'ml_integration'))
@@ -73,8 +74,12 @@ baseline_method = get_baseline_method()
 print(f"\nSelected baseline method: {baseline_method}")
 print("="*80)
 
+# Get output directory and create structure
+output_dir = get_output_dir("comprehensive_analysis_results")
+dirs = create_output_structure(output_dir)
+
 # Initialize batch analyzer
-batch_analyzer = BatchMLAnalyzer(output_dir="comprehensive_analysis_results")
+batch_analyzer = BatchMLAnalyzer(output_dir=str(output_dir))
 
 # Analyze experimental spectrum
 if os.path.exists(experimental_file):
@@ -100,17 +105,7 @@ batch_analyzer.analyze_directory(
 print("\n" + "="*80)
 print("ANALYSIS COMPLETED!")
 print("="*80)
-print("Results organized in:")
-print("  comprehensive_analysis_results/")
-print("  ├── plots/")
-print("  │   ├── main_analysis/      - Main spectrum + fit plots")
-print("  │   ├── baseline_detection/ - Baseline analysis plots")
-print("  │   ├── peak_detection/     - Peak detection plots")
-print("  │   └── kde_density/        - KDE density plots")
-print("  ├── features/               - Combined features CSV")
-print("  ├── summaries/              - Analysis summaries")
-print("  └── logs/                   - Analysis logs")
-print("="*80)
+print_output_structure(output_dir)
 
 # Automatically create clean ML dataset
 print("\n" + "="*80)
@@ -124,13 +119,13 @@ try:
     os.chdir(project_root)
     
     # Create clean ML dataset
-    clean_dataset = create_clean_ml_dataset()
+    clean_dataset = create_clean_ml_dataset(output_dir_name="comprehensive_analysis_results")
     
     if clean_dataset is not None:
         print("\n" + "="*80)
         print("CLEAN ML DATASET CREATED SUCCESSFULLY!")
         print("="*80)
-        print("File: comprehensive_analysis_results/features/ml_dataset_clean.csv")
+        print(f"File: {output_dir}/features/ml_dataset_clean.csv")
         print(f"Features: {len(clean_dataset.columns)}")
         print(f"Samples: {len(clean_dataset)}")
         print("="*80)
@@ -148,7 +143,7 @@ print("\n" + "="*80)
 print("BATCH ANALYSIS WORKFLOW COMPLETE!")
 print("="*80)
 print("Next steps:")
-print("1. Check comprehensive_analysis_results/features/ml_dataset_clean.csv")
-print("2. Review plots in comprehensive_analysis_results/plots/")
+print(f"1. Check {output_dir}/features/ml_dataset_clean.csv")
+print(f"2. Review plots in {output_dir}/plots/")
 print("3. Use the clean dataset for machine learning analysis")
 print("="*80) 

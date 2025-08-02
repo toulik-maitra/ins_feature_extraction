@@ -94,6 +94,38 @@ def statistical_baseline(x, y, window_size=100):
 
 ## 📊 Feature Extraction Methods
 
+### Enhanced Energy Region Analysis
+
+The system now provides **comprehensive energy region analysis** with 93 enhanced features across three energy regions:
+
+```python
+def _calculate_energy_region_features(self, centers, amplitudes, fwhms, areas):
+    """
+    Calculate comprehensive energy region features for each energy region.
+    
+    Energy Regions:
+    - Low Energy (0-500 cm⁻¹): Fundamental vibrations
+    - Mid Energy (500-2000 cm⁻¹): Combination bands
+    - High Energy (2000-3500 cm⁻¹): Overtone vibrations
+    
+    Features per region (31 each):
+    - Amplitude: mean, std, max, min, median, skewness, kurtosis, cv, iqr, p25, p75
+    - FWHM: mean, std, max, min, median, skewness, kurtosis, cv, iqr, p25, p75
+    - Area: mean, std, max, min, median, skewness, kurtosis, cv, iqr, p25, p75
+    """
+```
+
+**Enhanced Feature Categories:**
+- **Amplitude Statistics (11 features)**: Mean, std, max, min, median, skewness, kurtosis, CV, IQR, 25th/75th percentiles
+- **Width Statistics (11 features)**: FWHM analysis with full statistical distribution
+- **Area Statistics (11 features)**: Integrated intensities with comprehensive analysis
+
+**Benefits:**
+- **Better Structure Discrimination**: Detailed energy-dependent analysis
+- **Improved Temperature Studies**: Enhanced sensitivity to temperature changes
+- **Advanced ML Models**: 90+ new features for better predictive performance
+- **Cross-Region Correlations**: Energy-dependent structural relationships
+
 ### Amplitude Features
 
 ```python

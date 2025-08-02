@@ -85,8 +85,8 @@ See `.gitignore` for complete details.
 ```
 comprehensive_analysis_results/
 ├── features/                          # Extracted features
-│   ├── ml_dataset_clean.csv          # Clean ML dataset (61 features, 56 samples)
-│   ├── all_molecules_features.csv    # Complete dataset with all features
+│   ├── ml_dataset_clean.csv          # Clean ML dataset (151 features, 56 samples)
+│   ├── all_molecules_features.csv    # Complete dataset with all features (202 features)
 │   └── [molecule]_features.csv       # Individual feature files
 ├── plots/                            # Publication-quality plots
 │   ├── main_analysis/                # Main spectrum analysis plots
@@ -150,12 +150,31 @@ pip install -e .
 
 ## Key Features
 
-### Comprehensive Feature Extraction (61 ML-Ready Features)
+### 🚀 Enhanced Energy Region Analysis (NEW!)
+The system now provides **comprehensive energy region analysis** with 93 enhanced features across three energy regions:
+
+- **Low Energy (0-500 cm⁻¹)**: 31 features for fundamental vibrations
+- **Mid Energy (500-2000 cm⁻¹)**: 31 features for combination bands  
+- **High Energy (2000-3500 cm⁻¹)**: 31 features for overtone vibrations
+
+**Enhanced Features Include:**
+- **Amplitude Statistics**: Mean, std, max, min, median, skewness, kurtosis, CV, IQR, percentiles
+- **Width Statistics**: FWHM analysis with full statistical distribution
+- **Area Statistics**: Integrated intensities with comprehensive analysis
+- **Cross-Region Correlations**: Energy-dependent structural relationships
+
+**Benefits:**
+- **Better Structure Discrimination**: Detailed energy-dependent analysis
+- **Improved Temperature Studies**: Enhanced sensitivity to temperature changes
+- **Advanced ML Models**: 90+ new features for better predictive performance
+- **Comprehensive Analysis**: 151 total features vs. original 61 features
+
+### Comprehensive Feature Extraction (151 ML-Ready Features)
 - **Sample Identification**: Each row includes `molecule_name` for clear sample tracking
 - **Peak Analysis**: Count, density, amplitude, width, area statistics
 - **Baseline Analysis**: Detected baseline areas and signal quality metrics
 - **Peak-to-Baseline Ratios**: With outlier removal (1st-99th percentile)
-- **Energy Region Analysis**: Low/mid/high energy peak distributions
+- **Enhanced Energy Region Analysis**: 93 comprehensive features per energy region (0-500, 500-2000, 2000-3500 cm⁻¹)
 - **Fit Quality Metrics**: R², RMSE, baseline values
 
 ### Advanced Peak Detection
@@ -178,7 +197,7 @@ pip install -e .
 
 ## Comprehensive Feature Documentation
 
-The system extracts 61 essential features from INS spectra, organized into the following categories:
+The system extracts 151 essential features from INS spectra, organized into the following categories:
 
 ### 1. Sample Identification
 | Feature | Description | ML Relevance |
@@ -232,15 +251,51 @@ The system extracts 61 essential features from INS spectra, organized into the f
 | `area_skewness` | Skewness of area distribution | dimensionless | Area asymmetry |
 | `area_kurtosis` | Kurtosis of area distribution | dimensionless | Area peakedness |
 
-### 6. Energy Region Analysis (6 features)
+### 6. Enhanced Energy Region Analysis (93 features)
+**Low Energy Region (0-500 cm⁻¹) - 31 features:**
 | Feature | Description | Units | ML Relevance |
 |---------|-------------|-------|--------------|
-| `low_energy_peaks` | Peaks in 0-500 cm⁻¹ | count | Fundamental vibrations |
-| `mid_energy_peaks` | Peaks in 500-2000 cm⁻¹ | count | Combination bands |
-| `high_energy_peaks` | Peaks in 2000-3500 cm⁻¹ | count | Overtone vibrations |
-| `low_energy_fraction` | Fraction of peaks in low energy | dimensionless | Fundamental dominance |
-| `mid_energy_fraction` | Fraction of peaks in mid energy | dimensionless | Combination dominance |
-| `high_energy_fraction` | Fraction of peaks in high energy | dimensionless | Overtone dominance |
+| `low_energy_peaks` | Peak count in 0-500 cm⁻¹ | count | Fundamental vibrations |
+| `low_energy_peak_count` | Enhanced peak count | count | Detailed fundamental analysis |
+| `low_energy_amplitude_mean/std/max/min/median` | Amplitude statistics | a.u. | Fundamental vibration intensities |
+| `low_energy_amplitude_skewness/kurtosis/cv` | Amplitude distribution | dimensionless | Fundamental vibration patterns |
+| `low_energy_amplitude_iqr/percentile_25/75` | Amplitude percentiles | a.u. | Fundamental vibration ranges |
+| `low_energy_fwhm_mean/std/max/min/median` | Width statistics | cm⁻¹ | Fundamental peak sharpness |
+| `low_energy_fwhm_skewness/kurtosis/cv` | Width distribution | dimensionless | Fundamental peak shapes |
+| `low_energy_fwhm_iqr/percentile_25/75` | Width percentiles | cm⁻¹ | Fundamental peak width ranges |
+| `low_energy_area_mean/std/max/min/median` | Area statistics | a.u.·cm⁻¹ | Fundamental integrated intensities |
+| `low_energy_area_skewness/kurtosis/cv` | Area distribution | dimensionless | Fundamental intensity patterns |
+| `low_energy_area_iqr/percentile_25/75` | Area percentiles | a.u.·cm⁻¹ | Fundamental intensity ranges |
+
+**Mid Energy Region (500-2000 cm⁻¹) - 31 features:**
+| Feature | Description | Units | ML Relevance |
+|---------|-------------|-------|--------------|
+| `mid_energy_peaks` | Peak count in 500-2000 cm⁻¹ | count | Combination bands |
+| `mid_energy_peak_count` | Enhanced peak count | count | Detailed combination analysis |
+| `mid_energy_amplitude_mean/std/max/min/median` | Amplitude statistics | a.u. | Combination band intensities |
+| `mid_energy_amplitude_skewness/kurtosis/cv` | Amplitude distribution | dimensionless | Combination band patterns |
+| `mid_energy_amplitude_iqr/percentile_25/75` | Amplitude percentiles | a.u. | Combination band ranges |
+| `mid_energy_fwhm_mean/std/max/min/median` | Width statistics | cm⁻¹ | Combination peak sharpness |
+| `mid_energy_fwhm_skewness/kurtosis/cv` | Width distribution | dimensionless | Combination peak shapes |
+| `mid_energy_fwhm_iqr/percentile_25/75` | Width percentiles | cm⁻¹ | Combination peak width ranges |
+| `mid_energy_area_mean/std/max/min/median` | Area statistics | a.u.·cm⁻¹ | Combination integrated intensities |
+| `mid_energy_area_skewness/kurtosis/cv` | Area distribution | dimensionless | Combination intensity patterns |
+| `mid_energy_area_iqr/percentile_25/75` | Area percentiles | a.u.·cm⁻¹ | Combination intensity ranges |
+
+**High Energy Region (2000-3500 cm⁻¹) - 31 features:**
+| Feature | Description | Units | ML Relevance |
+|---------|-------------|-------|--------------|
+| `high_energy_peaks` | Peak count in 2000-3500 cm⁻¹ | count | Overtone vibrations |
+| `high_energy_peak_count` | Enhanced peak count | count | Detailed overtone analysis |
+| `high_energy_amplitude_mean/std/max/min/median` | Amplitude statistics | a.u. | Overtone vibration intensities |
+| `high_energy_amplitude_skewness/kurtosis/cv` | Amplitude distribution | dimensionless | Overtone vibration patterns |
+| `high_energy_amplitude_iqr/percentile_25/75` | Amplitude percentiles | a.u. | Overtone vibration ranges |
+| `high_energy_fwhm_mean/std/max/min/median` | Width statistics | cm⁻¹ | Overtone peak sharpness |
+| `high_energy_fwhm_skewness/kurtosis/cv` | Width distribution | dimensionless | Overtone peak shapes |
+| `high_energy_fwhm_iqr/percentile_25/75` | Width percentiles | cm⁻¹ | Overtone peak width ranges |
+| `high_energy_area_mean/std/max/min/median` | Area statistics | a.u.·cm⁻¹ | Overtone integrated intensities |
+| `high_energy_area_skewness/kurtosis/cv` | Area distribution | dimensionless | Overtone intensity patterns |
+| `high_energy_area_iqr/percentile_25/75` | Area percentiles | a.u.·cm⁻¹ | Overtone intensity ranges |
 
 ### 7. Peak-to-Baseline Ratios (8 features)
 | Feature | Description | Units | ML Relevance |

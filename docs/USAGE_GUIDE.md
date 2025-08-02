@@ -60,13 +60,52 @@ comprehensive_analysis_results/
 ### Key Files for ML Analysis
 
 1. **`ml_dataset_clean.csv`** - Your main ML dataset
-   - 61 features per sample
+   - 151 features per sample (including 93 enhanced energy region features)
    - Includes sample identifiers (`molecule_name`)
    - Ready for machine learning
 
 2. **`all_molecules_features.csv`** - Complete dataset
-   - All extracted features including individual peak arrays
+   - 202 total features including individual peak arrays
+   - Enhanced energy region features with comprehensive statistics
    - Useful for detailed analysis
+
+## 🚀 Enhanced Energy Region Features
+
+### Overview
+The system now provides **comprehensive energy region analysis** with 93 enhanced features across three energy regions:
+
+- **Low Energy (0-500 cm⁻¹)**: 31 features for fundamental vibrations
+- **Mid Energy (500-2000 cm⁻¹)**: 31 features for combination bands  
+- **High Energy (2000-3500 cm⁻¹)**: 31 features for overtone vibrations
+
+### Enhanced Feature Categories
+
+**For Each Energy Region:**
+- **Amplitude Features (11)**: Mean, std, max, min, median, skewness, kurtosis, CV, IQR, 25th/75th percentiles
+- **Width Features (11)**: FWHM statistics with full distribution analysis
+- **Area Features (11)**: Integrated intensities with comprehensive statistics
+
+### Benefits
+- **Better Structure Discrimination**: Detailed energy-dependent analysis
+- **Improved Temperature Studies**: Enhanced sensitivity to temperature changes
+- **Advanced ML Models**: 90+ new features for better predictive performance
+- **Cross-Region Correlations**: Energy-dependent structural relationships
+
+### Example Usage
+```python
+# Enhanced energy region features are automatically included
+# in the feature extraction process
+features = analyzer.extract_features(spectrum_data)
+
+# Access enhanced energy region features
+low_energy_features = [col for col in features.columns if 'low_energy' in col]
+mid_energy_features = [col for col in features.columns if 'mid_energy' in col]
+high_energy_features = [col for col in features.columns if 'high_energy' in col]
+
+print(f"Low energy features: {len(low_energy_features)}")
+print(f"Mid energy features: {len(mid_energy_features)}")
+print(f"High energy features: {len(high_energy_features)}")
+```
 
 ## 🔧 Advanced Configuration
 

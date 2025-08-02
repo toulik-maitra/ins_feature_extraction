@@ -27,6 +27,15 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from .ml_peak_analyzer import MLPeakAnalyzer
+from ..config.output_config import create_output_structure
+try:
+    from ..utils.pb_ratio_analysis import PBRatioAnalyzer, analyze_pb_ratios_from_features
+except ImportError:
+    # Fallback for when running as script
+    import sys
+    import os
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
+    from pb_ratio_analysis import PBRatioAnalyzer, analyze_pb_ratios_from_features
 
 class BatchMLAnalyzer:
     """Comprehensive batch analyzer for INS spectra with ML feature extraction."""
@@ -41,21 +50,20 @@ class BatchMLAnalyzer:
             Directory to store all results
         """
         self.output_dir = Path(output_dir)
-        self.output_dir.mkdir(exist_ok=True)
         
-        # Create organized subdirectories
-        self.plots_dir = self.output_dir / "plots"
-        self.features_dir = self.output_dir / "features"
-        self.summaries_dir = self.output_dir / "summaries"
-        self.logs_dir = self.output_dir / "logs"
-        # Create plot subdirectories
-        self.main_plots_dir = self.plots_dir / "main_analysis"
-        self.baseline_plots_dir = self.plots_dir / "baseline_detection"
-        self.peak_plots_dir = self.plots_dir / "peak_detection"
-        self.kde_plots_dir = self.plots_dir / "kde_density"
-        for d in [self.plots_dir, self.features_dir, self.summaries_dir, self.logs_dir,
-                  self.main_plots_dir, self.baseline_plots_dir, self.peak_plots_dir, self.kde_plots_dir]:
-            d.mkdir(exist_ok=True)
+        # Create organized directory structure using centralized configuration
+        dirs = create_output_structure(self.output_dir)
+        
+        # Assign directory paths
+        self.plots_dir = dirs["plots"]
+        self.features_dir = dirs["features"]
+        self.summaries_dir = dirs["summaries"]
+        self.logs_dir = dirs["logs"]
+        self.pb_ratio_dir = dirs["pb_ratio"]
+        self.main_plots_dir = dirs["main_plots"]
+        self.baseline_plots_dir = dirs["baseline_plots"]
+        self.peak_plots_dir = dirs["peak_plots"]
+        self.kde_plots_dir = dirs["kde_plots"]
         
         # Initialize results storage
         self.all_features = []
@@ -405,6 +413,64 @@ class BatchMLAnalyzer:
         except Exception as e:
             print(f"✗ Error creating KDE plot: {e}")
     
+    def _create_pb_ratio_analysis(self):
+        """Create comprehensive peak-to-baseline ratio analysis."""
+        if not self.all_features:
+            print("No features available for P/B ratio analysis")
+            return
+        
+        print(f"\n{'='*60}")
+        print("CREATING PEAK-TO-BASELINE RATIO ANALYSIS")
+        print(f"{'='*60}")
+        
+        try:
+            # Filter features that have peak-to-baseline ratios
+            features_with_ratios = []
+            for features in self.all_features:
+                if ('peak_to_baseline_ratios' in features and 
+                    len(features['peak_to_baseline_ratios']) > 0):
+                    features_with_ratios.append(features)
+            
+            if not features_with_ratios:
+                print("No samples with peak-to-baseline ratios found")
+                return
+            
+            print(f"Found {len(features_with_ratios)} samples with P/B ratios")
+            
+            # Create P/B ratio analyzer
+            pb_analyzer = PBRatioAnalyzer(output_dir=str(self.pb_ratio_dir))
+            
+            # Add data for each sample
+            for features in features_with_ratios:
+                molecule_name = features.get('molecule_name', 'Unknown')
+                ratios = features['peak_to_baseline_ratios']
+                energy_positions = features.get('peak_centers', None)
+                peak_amplitudes = features.get('peak_amplitudes', None)
+                
+                pb_analyzer.add_ratio_data(
+                    ratios=ratios,
+                    sample_label=molecule_name,
+                    energy_positions=energy_positions,
+                    peak_amplitudes=peak_amplitudes
+                )
+            
+            # Create all plots and analyses
+            pb_analyzer.create_all_plots()
+            
+            # Save ratio data to CSV
+            pb_analyzer.save_ratio_data_to_csv("pb_ratio_data.csv")
+            
+            print(f"✓ P/B ratio analysis completed successfully")
+            print(f"  - {len(features_with_ratios)} samples analyzed")
+            print(f"  - Plots saved to: {self.pb_ratio_dir}/plots/")
+            print(f"  - Statistics saved to: {self.pb_ratio_dir}/statistics/")
+            print(f"  - Comparisons saved to: {self.pb_ratio_dir}/comparisons/")
+            
+        except Exception as e:
+            print(f"✗ Error in P/B ratio analysis: {e}")
+            import traceback
+            traceback.print_exc()
+    
     def _create_batch_summary(self):
         """Create comprehensive summary of batch analysis."""
         if not self.all_features:
@@ -524,11 +590,15 @@ class BatchMLAnalyzer:
         print(f"  - {len(ml_features_clean.columns)} essential features")
         print(f"  - {len(ml_features_clean)} samples")
         
+        # Create peak-to-baseline ratio analysis
+        self._create_pb_ratio_analysis()
+        
         print(f"\n✓ All results saved in: {self.output_dir}")
         print(f"  - Individual features: {self.features_dir}")
         print(f"  - Combined dataset: {ml_dataset_path}")
         print(f"  - Analysis summaries: {self.summaries_dir}")
         print(f"  - Individual plots: {self.plots_dir}")
+        print(f"  - P/B ratio analysis: {self.pb_ratio_dir}")
 
 def main():
     """Main function to handle command line arguments and run analysis."""

@@ -128,10 +128,65 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Analysis results (generated during runtime)
+# =============================================================================
+# INS ML ANALYSIS SYSTEM - OUTPUT RESULTS
+# =============================================================================
+# All analysis results, features, and ML integration outputs are excluded
+# to keep the repository clean and prevent large data files from being uploaded
+
+# Main analysis results directory
 comprehensive_analysis_results/
+comprehensive_analysis_results_regular_als/
+
+# Individual analysis result directories
 results/
 output/
+analysis_results/
+batch_analysis_results/
+
+# ML Integration results and outputs
+ml_integration_results/
+ml_analysis_results/
+ml_results/
+
+# Feature files and datasets
+*.csv
+!requirements.txt
+!setup.py
+!README.md
+!docs/*.md
+!examples/*.py
+!src/**/*.py
+
+# Plot files
+*.png
+*.pdf
+*.jpg
+*.jpeg
+*.svg
+*.eps
+
+# Data files
+*.dat
+*.txt
+!requirements.txt
+!README.md
+!docs/*.md
+!*.md
+
+# Log files
+*.log
+logs/
+
+# Temporary analysis files
+*.tmp
+*.temp
+*.bak
+*.checkpoint
+
+# =============================================================================
+# DEVELOPMENT AND IDE FILES
+# =============================================================================
 
 # IDE files
 .vscode/
@@ -153,18 +208,164 @@ Desktop.ini
 # Linux
 *~
 
-# Temporary files
-*.tmp
-*.temp
+# =============================================================================
+# PYTHON SPECIFIC
+# =============================================================================
 
-# ML Integration scripts and results
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+#Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# =============================================================================
+# INS ML ANALYSIS SYSTEM - SPECIFIC EXCLUSIONS
+# =============================================================================
+
+# ML Integration scripts and results (excluded from version control)
 examples/ml_integration/
-ml_integration_results/
-ml_analysis_results/
+examples/batch_analysis/
+examples/batch_processing/comprehensive_analysis_results/
 
-# Exclude all analysis results and features
-comprehensive_analysis_results/
-comprehensive_analysis_results/features/
-comprehensive_analysis_results/summaries/
-comprehensive_analysis_results/logs/
-comprehensive_analysis_results/plots/ 
+# Specific analysis result patterns
+*_analysis_results/
+*_features.csv
+*_plots/
+*_summaries/
+*_logs/
+
+# Enhanced energy region analysis results
+*_energy_analysis/
+*_region_features/
+*_enhanced_features/
+
+# Peak-to-baseline ratio analysis
+pb_ratio_analysis/
+pb_ratio_results/
+
+# Structural disorder analysis
+structural_disorder_analysis/
+structural_disorder_results/
+
+# Temperature structure analysis
+temperature_structure_analysis/
+temperature_structure_results/
+
+# Clustering and ML analysis results
+clustering_results/
+ml_clustering/
+feature_analysis/
+correlation_analysis/
+
+# Statistical analysis outputs
+statistical_analysis/
+statistical_results/
+statistics_output/
+
+# Publication quality plots
+publication_plots/
+high_quality_plots/
+final_plots/
+
+# Data validation and quality control
+data_validation/
+quality_control/
+validation_results/
+
+# Backup and checkpoint files
+*_backup/
+*_checkpoint/
+*_old/
+*_previous/ 

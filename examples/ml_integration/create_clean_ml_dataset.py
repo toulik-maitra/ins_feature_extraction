@@ -10,16 +10,22 @@ removing unnecessary features like individual peak arrays.
 import pandas as pd
 import numpy as np
 from pathlib import Path
+import sys
+import os
 
-def create_clean_ml_dataset():
+# Add src to path for imports
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+from config.output_config import get_analysis_results_path, get_features_file_path, get_clean_ml_dataset_path
+
+def create_clean_ml_dataset(output_dir_name=None):
     """Create a clean ML dataset from comprehensive analysis results."""
     
-    # Path to the comprehensive results
-    results_dir = Path("comprehensive_analysis_results")
+    # Get paths using centralized configuration
+    results_dir = get_analysis_results_path(output_dir_name)
     features_dir = results_dir / "features"
     
     # Read the combined features file
-    combined_file = features_dir / "all_molecules_features.csv"
+    combined_file = get_features_file_path(output_dir_name, "all_molecules_features.csv")
     
     if not combined_file.exists():
         print(f"Combined features file not found: {combined_file}")
@@ -79,8 +85,45 @@ def create_clean_ml_dataset():
         'median_peak_to_baseline_ratio', 'peak_to_baseline_ratio_cv',
         'num_ratio_outliers_removed',
         
-        # Energy region features
+        # Energy region features (basic counts)
         'low_energy_peaks', 'mid_energy_peaks', 'high_energy_peaks',
+        
+        # Enhanced energy region features (comprehensive analysis)
+        # Low energy region features (0-500 cm⁻¹)
+        'low_energy_peak_count', 'low_energy_amplitude_mean', 'low_energy_amplitude_std',
+        'low_energy_amplitude_max', 'low_energy_amplitude_min', 'low_energy_amplitude_median',
+        'low_energy_amplitude_skewness', 'low_energy_amplitude_kurtosis', 'low_energy_amplitude_cv',
+        'low_energy_amplitude_iqr', 'low_energy_amplitude_percentile_25', 'low_energy_amplitude_percentile_75',
+        'low_energy_fwhm_mean', 'low_energy_fwhm_std', 'low_energy_fwhm_max', 'low_energy_fwhm_min',
+        'low_energy_fwhm_median', 'low_energy_fwhm_skewness', 'low_energy_fwhm_kurtosis', 'low_energy_fwhm_cv',
+        'low_energy_fwhm_iqr', 'low_energy_fwhm_percentile_25', 'low_energy_fwhm_percentile_75',
+        'low_energy_area_mean', 'low_energy_area_std', 'low_energy_area_max', 'low_energy_area_min',
+        'low_energy_area_median', 'low_energy_area_skewness', 'low_energy_area_kurtosis', 'low_energy_area_cv',
+        'low_energy_area_iqr', 'low_energy_area_percentile_25', 'low_energy_area_percentile_75',
+        
+        # Mid energy region features (500-2000 cm⁻¹)
+        'mid_energy_peak_count', 'mid_energy_amplitude_mean', 'mid_energy_amplitude_std',
+        'mid_energy_amplitude_max', 'mid_energy_amplitude_min', 'mid_energy_amplitude_median',
+        'mid_energy_amplitude_skewness', 'mid_energy_amplitude_kurtosis', 'mid_energy_amplitude_cv',
+        'mid_energy_amplitude_iqr', 'mid_energy_amplitude_percentile_25', 'mid_energy_amplitude_percentile_75',
+        'mid_energy_fwhm_mean', 'mid_energy_fwhm_std', 'mid_energy_fwhm_max', 'mid_energy_fwhm_min',
+        'mid_energy_fwhm_median', 'mid_energy_fwhm_skewness', 'mid_energy_fwhm_kurtosis', 'mid_energy_fwhm_cv',
+        'mid_energy_fwhm_iqr', 'mid_energy_fwhm_percentile_25', 'mid_energy_fwhm_percentile_75',
+        'mid_energy_area_mean', 'mid_energy_area_std', 'mid_energy_area_max', 'mid_energy_area_min',
+        'mid_energy_area_median', 'mid_energy_area_skewness', 'mid_energy_area_kurtosis', 'mid_energy_area_cv',
+        'mid_energy_area_iqr', 'mid_energy_area_percentile_25', 'mid_energy_area_percentile_75',
+        
+        # High energy region features (2000-3500 cm⁻¹)
+        'high_energy_peak_count', 'high_energy_amplitude_mean', 'high_energy_amplitude_std',
+        'high_energy_amplitude_max', 'high_energy_amplitude_min', 'high_energy_amplitude_median',
+        'high_energy_amplitude_skewness', 'high_energy_amplitude_kurtosis', 'high_energy_amplitude_cv',
+        'high_energy_amplitude_iqr', 'high_energy_amplitude_percentile_25', 'high_energy_amplitude_percentile_75',
+        'high_energy_fwhm_mean', 'high_energy_fwhm_std', 'high_energy_fwhm_max', 'high_energy_fwhm_min',
+        'high_energy_fwhm_median', 'high_energy_fwhm_skewness', 'high_energy_fwhm_kurtosis', 'high_energy_fwhm_cv',
+        'high_energy_fwhm_iqr', 'high_energy_fwhm_percentile_25', 'high_energy_fwhm_percentile_75',
+        'high_energy_area_mean', 'high_energy_area_std', 'high_energy_area_max', 'high_energy_area_min',
+        'high_energy_area_median', 'high_energy_area_skewness', 'high_energy_area_kurtosis', 'high_energy_area_cv',
+        'high_energy_area_iqr', 'high_energy_area_percentile_25', 'high_energy_area_percentile_75',
         
         # Peak spacing features
         'mean_peak_spacing', 'std_peak_spacing',
@@ -94,7 +137,7 @@ def create_clean_ml_dataset():
     ml_features_clean = ml_features[available_features]
     
     # Save clean ML dataset
-    ml_dataset_path = features_dir / "ml_dataset_clean.csv"
+    ml_dataset_path = get_clean_ml_dataset_path(output_dir_name)
     ml_features_clean.to_csv(ml_dataset_path, index=False)
     
     print(f"Clean ML dataset saved: {ml_dataset_path}")
