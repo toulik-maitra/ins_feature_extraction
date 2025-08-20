@@ -88,7 +88,7 @@ comprehensive_analysis_results/
 │   ├── ml_dataset_clean.csv          # Clean ML dataset (151 features, 56 samples)
 │   ├── all_molecules_features.csv    # Complete dataset with all features (202 features)
 │   └── [molecule]_features.csv       # Individual feature files
-├── plots/                            # Publication-quality plots
+├── plots/                            # Generated plots
 │   ├── main_analysis/                # Main spectrum analysis plots
 │   ├── baseline_detection/           # Baseline detection plots
 │   ├── peak_detection/               # Peak detection plots
@@ -102,7 +102,7 @@ examples/ml_integration/              # ML integration scripts and outputs (excl
 
 ## Version Control and GitHub
 
-- **Repository:** https://github.com/toulik-maitra/ins_feature_extraction
+- **Repository:** [GitHub repository](https://github.com/toulik-maitra/ins_feature_extraction)
 - **Important:** All ML integration scripts and results are excluded from version control. Only core analysis code, documentation, and configuration should be committed.
 - **.gitignore:** Updated to ensure no results or ML integration scripts are uploaded.
 
@@ -150,24 +150,24 @@ pip install -e .
 
 ## Key Features
 
-### 🚀 Enhanced Energy Region Analysis (NEW!)
-The system now provides **comprehensive energy region analysis** with 93 enhanced features across three energy regions:
+### Enhanced Energy Region Analysis
+The system provides energy region analysis with 93 features across three energy regions:
 
 - **Low Energy (0-500 cm⁻¹)**: 31 features for fundamental vibrations
 - **Mid Energy (500-2000 cm⁻¹)**: 31 features for combination bands  
 - **High Energy (2000-3500 cm⁻¹)**: 31 features for overtone vibrations
 
-**Enhanced Features Include:**
+**Included:**
 - **Amplitude Statistics**: Mean, std, max, min, median, skewness, kurtosis, CV, IQR, percentiles
 - **Width Statistics**: FWHM analysis with full statistical distribution
 - **Area Statistics**: Integrated intensities with comprehensive analysis
 - **Cross-Region Correlations**: Energy-dependent structural relationships
 
-**Benefits:**
-- **Better Structure Discrimination**: Detailed energy-dependent analysis
-- **Improved Temperature Studies**: Enhanced sensitivity to temperature changes
-- **Advanced ML Models**: 90+ new features for better predictive performance
-- **Comprehensive Analysis**: 151 total features vs. original 61 features
+**Practical impact:**
+- **Improved structure discrimination**: Detailed energy-dependent analysis
+- **Temperature studies**: Increased sensitivity to temperature changes
+- **Modeling**: 90+ additional features for downstream ML
+- **Feature coverage**: 151 total features (previously 61)
 
 ### Comprehensive Feature Extraction (151 ML-Ready Features)
 - **Sample Identification**: Each row includes `molecule_name` for clear sample tracking
